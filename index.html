@@ -1420,7 +1420,7 @@
       </div>
       <div>
         <p>« J'ai longtemps cru qu'il fallait tout comprendre avant de pouvoir avancer. En vérité, le corps sait déjà. Il attend juste qu'on lui fasse assez de place pour parler.</p>
-        <p>Ce live, c'est ça : une heure où je te montre exactement comment je fais cette place. Sans script, sans filtre. Viens comme tu es. »</p>
+        <p>Ce live, c'est ça : une heure où je te montre exactement comment je fais cette place. Sans script, sans filtre. »</p>
         <p class="signature">Anaïs</p>
       </div>
     </div>
@@ -1449,6 +1449,31 @@
     <blockquote class="citation reveal">« Je pensais pas qu'on allait revenir sur ça. Je pensais pas que ça avait autant d'impact. <em>Je me suis sentie libérée.</em> »</blockquote>
     <p class="citation-source reveal">Cliente accompagnée par Anaïs</p>
     <div class="videos reveal" id="videos-temoignages"></div>
+  </section>
+
+  <!-- ============================ L'ÉCOLE, EN BREF ============================ -->
+  <section class="section" aria-label="L'école Selfty Academy">
+    <div class="titre-section reveal">
+      <h2 data-lettres>Et après le live</h2>
+      <span class="trait"></span>
+    </div>
+
+    <div class="ecole reveal">
+      <div class="ecole-chiffres">
+        <div><b>6</b><span>mois</span></div>
+        <div><b>15</b><span>modules</span></div>
+        <div><b>2</b><span>calls / semaine</span></div>
+      </div>
+      <ul>
+        <li><strong>La Selfty Academy ouvre le 10 octobre.</strong> Six mois pour devenir coach, et en vivre : trois mois d'outils rares (somatique, parts work, système nerveux), puis trois mois pour lancer ton activité, en conditions réelles.</li>
+        <li><strong>Certifiante et vécue en vrai.</strong> Deux coachings de groupe par semaine, un événement en présentiel, des séances payées dès la formation, un examen et un suivi après le parcours.</li>
+      </ul>
+      <p class="voir">
+        <a class="lien-agenda" data-ouvre-ecole href="https://selfty-academy.github.io/formation/" target="_blank" rel="noopener">
+          Voir le programme complet
+        </a>
+      </p>
+    </div>
   </section>
 
   <!-- ============================ FLOW D'INSCRIPTION ============================ -->
@@ -1586,7 +1611,7 @@
           <li><strong>À la fin.</strong> Un examen, une certification, et un suivi après le parcours.</li>
         </ul>
         <p class="voir">
-          <a class="lien-agenda" id="lien-ecole" href="https://selfty-academy.github.io/formation/" target="_blank" rel="noopener">
+          <a class="lien-agenda" id="lien-ecole" data-ouvre-ecole href="https://selfty-academy.github.io/formation/" target="_blank" rel="noopener">
             Voir le programme complet
           </a>
         </p>
@@ -2089,16 +2114,19 @@ setTimeout(() => {
    Le lien garde son href : clic normal = panneau ; nouvel onglet,
    clic molette ou iframe bloquée = la page s'ouvre classiquement. */
 (function () {
-  const lien = $('lien-ecole');
+  const liens = document.querySelectorAll('[data-ouvre-ecole]');
   const modale = $('modale-ecole');
   const cadre = $('cadre-ecole');
   const fermer = $('fermer-ecole');
-  if (!lien || !modale) return;
+  if (!liens.length || !modale) return;
+
+  let declencheur = liens[0];
 
   function ouvrir(e) {
     if (e.metaKey || e.ctrlKey || e.shiftKey || e.button === 1) return; // laisser faire le navigateur
     e.preventDefault();
-    if (!cadre.src) cadre.src = lien.href; // chargée au premier clic seulement
+    declencheur = e.currentTarget;
+    if (!cadre.src) cadre.src = declencheur.href; // chargée au premier clic seulement
     modale.hidden = false;
     document.body.style.overflow = 'hidden';
     fermer.focus();
@@ -2106,9 +2134,9 @@ setTimeout(() => {
   function refermer() {
     modale.hidden = true;
     document.body.style.overflow = '';
-    lien.focus();
+    declencheur.focus();
   }
-  lien.addEventListener('click', ouvrir);
+  liens.forEach(l => l.addEventListener('click', ouvrir));
   fermer.addEventListener('click', refermer);
   modale.addEventListener('click', e => { if (e.target === modale) refermer(); });
   document.addEventListener('keydown', e => { if (e.key === 'Escape' && !modale.hidden) refermer(); });
