@@ -953,6 +953,49 @@
     max-width: 430px;
     margin: 0 auto 26px;
   }
+  /* ---------- Récap de l'école, sur l'écran de confirmation ---------- */
+  .ecole {
+    background: linear-gradient(168deg, var(--creme) 0%, rgba(255, 231, 210, 0.55) 100%);
+    border-radius: 20px;
+    padding: 26px 24px 24px;
+    margin: 22px 0 26px;
+  }
+  .ecole-chiffres {
+    display: flex;
+    justify-content: center;
+    gap: 28px;
+    padding-bottom: 20px;
+    margin-bottom: 18px;
+    border-bottom: 1px solid rgba(93, 43, 74, 0.14);
+  }
+  .ecole-chiffres div { text-align: center; }
+  .ecole-chiffres b {
+    display: block;
+    font-family: var(--display);
+    font-weight: 400;
+    font-size: 30px;
+    line-height: 1.1;
+    color: var(--terracotta-texte);
+  }
+  .ecole-chiffres span {
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.13em;
+    text-transform: uppercase;
+    color: var(--nuit);
+  }
+  .ecole ul { list-style: none; }
+  .ecole li {
+    font-size: 14.5px;
+    line-height: 1.55;
+    color: var(--brun);
+    padding: 10px 0;
+    text-align: left;
+  }
+  .ecole li + li { border-top: 1px solid rgba(93, 43, 74, 0.1); }
+  .ecole li strong { color: var(--prune); font-weight: 600; }
+  .ecole .voir { text-align: center; margin-top: 20px; }
+
   /* ---------- Ajouter à son agenda ---------- */
   .agenda { text-align: center; margin: 0 auto 26px; }
   .lien-agenda {
@@ -1494,7 +1537,26 @@
 
       <hr class="separateur">
 
-      <p class="intro"><strong>Une dernière chose.</strong><br>La Selfty Academy, l'école d'Anaïs, ouvre à la rentrée. Les inscriptions passent par une liste d'attente.</p>
+      <p class="intro"><strong>Une dernière chose.</strong><br>La Selfty Academy, l'école d'Anaïs, ouvre le <strong>10 octobre</strong>. La sélection se fait en septembre, et elle passe par une liste d'attente.</p>
+
+      <div class="ecole">
+        <div class="ecole-chiffres">
+          <div><b>6</b><span>mois</span></div>
+          <div><b>15</b><span>modules</span></div>
+          <div><b>2</b><span>calls / semaine</span></div>
+        </div>
+        <ul>
+          <li><strong>Mois 1 à 3 — les outils.</strong> Somatique, parts work, émotions, inconscient et système nerveux, rapport à l'argent. Des outils rares en France, pratiqués dès la première semaine.</li>
+          <li><strong>Mois 4 à 6 — en vivre.</strong> Ton offre, tes tarifs, vendre en étant au service, créer des clients. Presque la moitié du programme, en conditions réelles.</li>
+          <li><strong>En vrai.</strong> Deux coachings de groupe par semaine, un événement en présentiel avec toute la promo, et des séances payées dès la formation.</li>
+          <li><strong>À la fin.</strong> Un examen, une certification, et un suivi après le parcours.</li>
+        </ul>
+        <p class="voir">
+          <a class="lien-agenda" id="lien-ecole" href="ecole/" target="_blank" rel="noopener">
+            Voir le programme complet
+          </a>
+        </p>
+      </div>
 
       <div class="champ" id="champ-ecole">
         <label class="etiquette">Tu veux candidater à la liste d'attente ?</label>
