@@ -1219,6 +1219,40 @@
     border-radius: 3px;
   }
 
+  /* Le panneau de la plaquette : plus large, l'iframe prend tout */
+  .panneau-ecole {
+    max-width: 960px;
+    padding: 0;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    height: 88vh;
+  }
+  .ecole-barre {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+    padding: 14px 18px;
+    border-bottom: 1px solid var(--filet-clair);
+    background: var(--blanc);
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--nuit);
+  }
+  .ecole-actions { display: inline-flex; align-items: center; gap: 16px; }
+  .ecole-actions a {
+    font-size: 12px;
+    font-weight: 400;
+    letter-spacing: 0.03em;
+    text-transform: none;
+    color: var(--terracotta-texte);
+  }
+  .panneau-ecole .modale-fermer { position: static; float: none; }
+  #cadre-ecole { flex: 1; width: 100%; border: none; background: var(--papier); }
+
   .mention-rgpd {
     font-size: 12.5px;
     line-height: 1.55;
@@ -1666,6 +1700,24 @@
   <a href="#inscription" class="cta" data-magnetique>Je réserve ma place</a>
 </div>
 
+<!-- ============ LA PLAQUETTE DE L'ÉCOLE, INTÉGRÉE ============
+     Le programme complet s'ouvre par-dessus la page, sans quitter
+     le parcours d'inscription. La page chargée est la plaquette
+     publiée sur /formation/ (même origine, donc iframe sans souci).
+============================================================ -->
+<div class="modale" id="modale-ecole" role="dialog" aria-modal="true" aria-label="Le programme de la Selfty Academy" hidden>
+  <div class="modale-panneau panneau-ecole">
+    <div class="ecole-barre">
+      <span>Selfty Academy · La formation</span>
+      <span class="ecole-actions">
+        <a href="https://selfty-academy.github.io/formation/" target="_blank" rel="noopener">Ouvrir dans un onglet</a>
+        <button class="modale-fermer" id="fermer-ecole" type="button" aria-label="Fermer">&times;</button>
+      </span>
+    </div>
+    <iframe id="cadre-ecole" title="Le programme de la Selfty Academy" loading="lazy"></iframe>
+  </div>
+</div>
+
 <!-- ============ MENTIONS LÉGALES ET CONFIDENTIALITÉ ============
      Les passages surlignés en terracotta sont à compléter avant
      toute diffusion publique. Cherche « aremplir » dans ce fichier.
@@ -2031,6 +2083,35 @@ setTimeout(() => {
   }
   afficher();
   setInterval(afficher, 30000);
+})();
+
+/* ---------- La plaquette de l'école, en surimpression ----------
+   Le lien garde son href : clic normal = panneau ; nouvel onglet,
+   clic molette ou iframe bloquée = la page s'ouvre classiquement. */
+(function () {
+  const lien = $('lien-ecole');
+  const modale = $('modale-ecole');
+  const cadre = $('cadre-ecole');
+  const fermer = $('fermer-ecole');
+  if (!lien || !modale) return;
+
+  function ouvrir(e) {
+    if (e.metaKey || e.ctrlKey || e.shiftKey || e.button === 1) return; // laisser faire le navigateur
+    e.preventDefault();
+    if (!cadre.src) cadre.src = lien.href; // chargée au premier clic seulement
+    modale.hidden = false;
+    document.body.style.overflow = 'hidden';
+    fermer.focus();
+  }
+  function refermer() {
+    modale.hidden = true;
+    document.body.style.overflow = '';
+    lien.focus();
+  }
+  lien.addEventListener('click', ouvrir);
+  fermer.addEventListener('click', refermer);
+  modale.addEventListener('click', e => { if (e.target === modale) refermer(); });
+  document.addEventListener('keydown', e => { if (e.key === 'Escape' && !modale.hidden) refermer(); });
 })();
 
 /* ---------- Mentions légales : ouverture et fermeture ---------- */
