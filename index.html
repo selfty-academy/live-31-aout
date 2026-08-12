@@ -398,6 +398,17 @@
     padding-left: 10px;
     border-left: 1px solid var(--filet-clair);
   }
+  /* Sur petit écran, le badge doit tenir sur une seule ligne */
+  @media (max-width: 430px) {
+    .badge-date {
+      font-size: 9.5px;
+      letter-spacing: 0.14em;
+      gap: 7px;
+      padding: 8px 13px;
+      white-space: nowrap;
+    }
+    .badge-date .compte { padding-left: 7px; }
+  }
 
   h1 {
     font-family: var(--display);
@@ -1351,8 +1362,8 @@
     </div>
     <ul class="pour-qui">
       <li class="reveal"><span class="puce"></span><span>Tu <strong>accompagnes déjà</strong>, ou tu t'y prépares, et tu sens que ce qui te retient n'est pas stratégique. C'est plus profond que ça.</span></li>
-      <li class="reveal"><span class="puce"></span><span>Tu as fait des formations, lu, compris. Et pourtant <strong>quelque chose ne bouge pas</strong>. Le mental a fait son travail ; le corps, pas encore.</span></li>
-      <li class="reveal"><span class="puce"></span><span>Tu veux voir <strong>ce qui se passe vraiment</strong> dans une séance somatique. Pas la théorie : le geste, le silence, le moment où ça se dénoue.</span></li>
+      <li class="reveal"><span class="puce"></span><span>Tu as fait des formations, lu, compris. Et pourtant <strong>quelque chose ne bouge pas</strong>. Le mental a fait son travail ; le corps, pas encore.</span></li>
+      <li class="reveal"><span class="puce"></span><span>Tu veux voir <strong>ce qui se passe vraiment</strong> dans une séance somatique. Pas la théorie : le geste, le silence, le moment où ça se dénoue.</span></li>
     </ul>
   </section>
 
@@ -1371,7 +1382,7 @@
         </span>
         <div>
           <h3>Le coaching</h3>
-          <p>Anaïs coache en direct une personne de la communauté, sur le sujet que cette personne a choisi. Pas de mise en scène : un vrai blocage, une vraie séance.</p>
+          <p>Anaïs coache en direct une personne de la communauté, sur le sujet que cette personne a choisi. Pas de mise en scène : un vrai blocage, une vraie séance.</p>
         </div>
       </div>
 
@@ -1382,7 +1393,7 @@
         </span>
         <div>
           <h3>Le décryptage</h3>
-          <p>Après chaque outil, Anaïs ouvre le capot : ce qu'elle a observé, pourquoi cet outil précis, ce qu'il vient chercher dans le corps.</p>
+          <p>Après chaque outil, Anaïs ouvre le capot : ce qu'elle a observé, pourquoi cet outil précis, ce qu'il vient chercher dans le corps.</p>
         </div>
       </div>
 
@@ -1420,7 +1431,7 @@
       </div>
       <div>
         <p>« J'ai longtemps cru qu'il fallait tout comprendre avant de pouvoir avancer. En vérité, le corps sait déjà. Il attend juste qu'on lui fasse assez de place pour parler.</p>
-        <p>Ce live, c'est ça : une heure où je te montre exactement comment je fais cette place. Sans script, sans filtre. »</p>
+        <p>Ce live, c'est ça : une heure où je te montre exactement comment je fais cette place. Sans script, sans filtre. »</p>
         <p class="signature">Anaïs</p>
       </div>
     </div>
@@ -1465,7 +1476,7 @@
         <div><b>2</b><span>calls / semaine</span></div>
       </div>
       <ul>
-        <li><strong>La Selfty Academy ouvre le 10 octobre.</strong> Six mois pour devenir coach, et en vivre : trois mois d'outils rares (somatique, parts work, système nerveux), puis trois mois pour lancer ton activité, en conditions réelles.</li>
+        <li><strong>La Selfty Academy ouvre le 10 octobre.</strong> Six mois pour devenir coach, et en vivre : trois mois d'outils rares (somatique, parts work, système nerveux), puis trois mois pour lancer ton activité, en conditions réelles.</li>
         <li><strong>Certifiante et vécue en vrai.</strong> Deux coachings de groupe par semaine, un événement en présentiel, des séances payées dès la formation, un examen et un suivi après le parcours.</li>
       </ul>
       <p class="voir">
@@ -1486,7 +1497,7 @@
     <!-- ÉTAPE 1 : optin -->
     <section class="flow-etape visible" id="etape-optin" aria-label="Inscription au live">
       <h2>Réserve ta place</h2>
-      <p class="intro">C'est gratuit, et ça se vit en direct : <strong><span data-config="date">lundi 31 août</span> à <span data-config="heure">18h00</span></strong>.</p>
+      <p class="intro">C'est gratuit, et ça se vit en direct : <strong><span data-config="date">lundi 31 août</span> à <span data-config="heure">18h00</span></strong>.</p>
 
       <div class="champ" id="champ-prenom">
         <label class="etiquette" for="prenom">Ton prénom</label>
@@ -1508,7 +1519,7 @@
       </div>
 
       <div class="champ" id="champ-mode">
-        <label class="etiquette">Comment tu veux vivre ce live ?</label>
+        <label class="etiquette">Comment tu veux vivre ce live ?</label>
         <div class="choix-groupe" role="radiogroup">
           <label class="choix">
             <input type="radio" name="mode" value="assister">
@@ -1531,10 +1542,10 @@
     <!-- ÉTAPE 2 : candidature coaching live -->
     <section class="flow-etape" id="etape-candidature" aria-label="Candidature au coaching en direct">
       <h2>Ta candidature</h2>
-      <p class="intro">Le sujet du coaching est libre : c'est toi qui le choisis. Ces réponses servent uniquement à Anaïs pour préparer le live.</p>
+      <p class="intro">Le sujet du coaching est libre : c'est toi qui le choisis. Ces réponses servent uniquement à Anaïs pour préparer le live.</p>
 
       <div class="champ" id="champ-situation">
-        <label class="etiquette" for="situation">Où tu en es aujourd'hui ?</label>
+        <label class="etiquette" for="situation">Où tu en es aujourd'hui ?</label>
         <div class="boite">
           <select id="situation" name="situation">
             <option value="" selected disabled>Choisis ce qui te décrit le mieux</option>
@@ -1548,13 +1559,13 @@
       </div>
 
       <div class="champ" id="champ-sujet">
-        <label class="etiquette" for="sujet">Sur quoi tu veux être coachée en direct ?</label>
+        <label class="etiquette" for="sujet">Sur quoi tu veux être coachée en direct ?</label>
         <div class="boite"><textarea id="sujet" name="sujet" placeholder="Décris la situation avec tes mots. Le plus précis possible : une scène, un moment, un chiffre."></textarea></div>
         <p class="erreur">Dis-nous sur quoi tu veux être coachée.</p>
       </div>
 
       <div class="champ" id="champ-essaye">
-        <label class="etiquette" for="essaye">Qu'est-ce que tu as déjà essayé pour avancer là-dessus ?</label>
+        <label class="etiquette" for="essaye">Qu'est-ce que tu as déjà essayé pour avancer là-dessus ?</label>
         <div class="boite"><textarea id="essaye" name="essaye" placeholder="Formations, accompagnements, prises de conscience, décisions..."></textarea></div>
         <p class="erreur">Réponds en une ou deux phrases.</p>
       </div>
@@ -1591,7 +1602,7 @@
           </svg>
           Ajouter à mon Google Agenda
         </a>
-        <a class="secondaire" data-agenda-ics download="live-selfty-31-aout.ics">Apple Calendrier, Outlook : télécharger l'invitation</a>
+        <a class="secondaire" data-agenda-ics download="live-selfty-31-aout.ics">Apple Calendrier, Outlook : télécharger l'invitation</a>
       </div>
 
       <hr class="separateur">
@@ -1618,7 +1629,7 @@
       </div>
 
       <div class="champ" id="champ-ecole">
-        <label class="etiquette">Tu veux candidater à la liste d'attente ?</label>
+        <label class="etiquette">Tu veux candidater à la liste d'attente ?</label>
         <div class="choix-groupe" role="radiogroup">
           <label class="choix">
             <input type="radio" name="ecole" value="oui">
@@ -1645,25 +1656,25 @@
       <p class="intro">Les 4 questions du questionnaire officiel. Réponds simplement, avec tes mots.</p>
 
       <div class="champ" id="champ-la1">
-        <label class="etiquette" for="la1">Es-tu déjà coach ? Si oui, par qui as-tu été formée ? Où en es-tu dans ton parcours pro, quelle est ton activité actuelle ?</label>
+        <label class="etiquette" for="la1">Es-tu déjà coach ? Si oui, par qui as-tu été formée ? Où en es-tu dans ton parcours pro, quelle est ton activité actuelle ?</label>
         <div class="boite"><textarea id="la1" name="la1"></textarea></div>
         <p class="erreur">Réponds à cette question.</p>
       </div>
 
       <div class="champ" id="champ-la2">
-        <label class="etiquette" for="la2">Quel serait ton résultat et ta situation idéale en sortant de l'école ?</label>
+        <label class="etiquette" for="la2">Quel serait ton résultat et ta situation idéale en sortant de l'école ?</label>
         <div class="boite"><textarea id="la2" name="la2"></textarea></div>
         <p class="erreur">Réponds à cette question.</p>
       </div>
 
       <div class="champ" id="champ-la3">
-        <label class="etiquette" for="la3">Qu'est-ce que tu as le plus envie d'apprendre ? Qu'est-ce qui t'intéresse le plus ?</label>
+        <label class="etiquette" for="la3">Qu'est-ce que tu as le plus envie d'apprendre ? Qu'est-ce qui t'intéresse le plus ?</label>
         <div class="boite"><textarea id="la3" name="la3"></textarea></div>
         <p class="erreur">Réponds à cette question.</p>
       </div>
 
       <div class="champ" id="champ-la4">
-        <label class="etiquette" for="la4">Qu'est-ce qui, selon toi, ferait la différence dans l'école ? Qu'est-ce qui te donnerait envie de la recommander ?</label>
+        <label class="etiquette" for="la4">Qu'est-ce qui, selon toi, ferait la différence dans l'école ? Qu'est-ce qui te donnerait envie de la recommander ?</label>
         <div class="boite"><textarea id="la4" name="la4"></textarea></div>
         <p class="erreur">Réponds à cette question.</p>
       </div>
@@ -1692,11 +1703,11 @@
           </svg>
           Ajouter à mon Google Agenda
         </a>
-        <a class="secondaire" data-agenda-ics download="live-selfty-31-aout.ics">Apple Calendrier, Outlook : télécharger l'invitation</a>
+        <a class="secondaire" data-agenda-ics download="live-selfty-31-aout.ics">Apple Calendrier, Outlook : télécharger l'invitation</a>
       </div>
 
       <div id="bloc-whatsapp" style="display:none;">
-        <p class="confirmation-texte" style="margin-bottom:14px;">En attendant le live, tout se passe dans la communauté WhatsApp privée : les coulisses de l'école, les infos du live et les échanges avec les autres inscrites.</p>
+        <p class="confirmation-texte" style="margin-bottom:14px;">En attendant le live, tout se passe dans la communauté WhatsApp privée : les coulisses de l'école, les infos du live et les échanges avec les autres inscrites.</p>
         <a class="cta bouton" id="lien-whatsapp" href="#" target="_blank" rel="noopener">Je rejoins la communauté WhatsApp</a>
       </div>
 
@@ -1761,8 +1772,8 @@
       SIRET 931 033 062 00015 · RCS Rennes 931 033 062<br>
       TVA intracommunautaire FR09931033062
     </p>
-    <p>Contact : <span class="aremplir">adresse e-mail de contact</span></p>
-    <p>Directrice de la publication : Anaïs Brault</p>
+    <p>Contact : <span class="aremplir">adresse e-mail de contact</span></p>
+    <p>Directrice de la publication : Anaïs Brault</p>
 
     <h3>Hébergement</h3>
     <p>Cette page est hébergée par GitHub Pages. GitHub&nbsp;Inc., 88 Colin P. Kelly Jr. Street, San Francisco, CA 94107, États-Unis.</p>
@@ -1777,17 +1788,17 @@
 
     <h3>Ce qu'on collecte, et pourquoi</h3>
     <ul>
-      <li><strong>Ton prénom, ton e-mail et ton numéro de téléphone</strong> : pour t'inscrire au live, t'envoyer le lien de connexion et les rappels sur WhatsApp et par e-mail.</li>
-      <li><strong>Si tu candidates au coaching en direct</strong> : où tu en es, le sujet sur lequel tu veux être coachée, ce que tu as déjà essayé, et ton accord explicite pour être coachée devant les autres participantes : pour permettre à Anaïs de préparer la séance et de choisir les personnes coachées.</li>
-      <li><strong>Si tu candidates à la liste d'attente de l'école</strong> : tes réponses aux quatre questions, pour étudier ta candidature.</li>
+      <li><strong>Ton prénom, ton e-mail et ton numéro de téléphone</strong> : pour t'inscrire au live, t'envoyer le lien de connexion et les rappels sur WhatsApp et par e-mail.</li>
+      <li><strong>Si tu candidates au coaching en direct</strong> : où tu en es, le sujet sur lequel tu veux être coachée, ce que tu as déjà essayé, et ton accord explicite pour être coachée devant les autres participantes : pour permettre à Anaïs de préparer la séance et de choisir les personnes coachées.</li>
+      <li><strong>Si tu candidates à la liste d'attente de l'école</strong> : tes réponses aux quatre questions, pour étudier ta candidature.</li>
     </ul>
     <p>Rien d'autre n'est collecté. Aucun profilage, aucune décision automatisée.</p>
 
     <h3>Sur quelle base</h3>
-    <p>Ton consentement, donné en remplissant volontairement le formulaire. Tu peux le retirer à tout moment, sans avoir à te justifier : il suffit d'écrire à l'adresse de contact.</p>
+    <p>Ton consentement, donné en remplissant volontairement le formulaire. Tu peux le retirer à tout moment, sans avoir à te justifier : il suffit d'écrire à l'adresse de contact.</p>
 
     <h3>Où vont ces informations</h3>
-    <p>Elles sont enregistrées dans un tableur Google Sheets privé, accessible uniquement à Anaïs et à son équipe. L'hébergement est assuré par Google Ireland Limited ; des transferts hors Union européenne sont possibles, encadrés par les clauses contractuelles types de la Commission européenne.</p>
+    <p>Elles sont enregistrées dans un tableur Google Sheets privé, accessible uniquement à Anaïs et à son équipe. L'hébergement est assuré par Google Ireland Limited ; des transferts hors Union européenne sont possibles, encadrés par les clauses contractuelles types de la Commission européenne.</p>
     <p><strong>Tes données ne sont ni vendues, ni louées, ni transmises à des tiers</strong> à des fins commerciales ou publicitaires.</p>
 
     <h3>Combien de temps</h3>
@@ -1797,10 +1808,10 @@
     <p>Cette page <strong>ne dépose aucun cookie</strong> et n'utilise aucun outil de mesure d'audience, de publicité ou de suivi comportemental. Ta visite n'est pas tracée. C'est pour cette raison qu'aucune bannière de consentement ne t'est demandée.</p>
 
     <h3>Tes droits</h3>
-    <p>Tu disposes d'un droit d'accès, de rectification, d'effacement, de limitation, d'opposition et de portabilité sur tes données. Écris à <span class="aremplir">adresse e-mail de contact</span> : tu recevras une réponse sous un mois.</p>
-    <p>Si la réponse ne te convient pas, tu peux saisir la CNIL : <a href="https://www.cnil.fr" target="_blank" rel="noopener">cnil.fr</a>, 3 place de Fontenoy, 75007 Paris.</p>
+    <p>Tu disposes d'un droit d'accès, de rectification, d'effacement, de limitation, d'opposition et de portabilité sur tes données. Écris à <span class="aremplir">adresse e-mail de contact</span> : tu recevras une réponse sous un mois.</p>
+    <p>Si la réponse ne te convient pas, tu peux saisir la CNIL : <a href="https://www.cnil.fr" target="_blank" rel="noopener">cnil.fr</a>, 3 place de Fontenoy, 75007 Paris.</p>
 
-    <p class="maj">Dernière mise à jour : 11 août 2026.</p>
+    <p class="maj">Dernière mise à jour : 11 août 2026.</p>
   </div>
 </div>
 
