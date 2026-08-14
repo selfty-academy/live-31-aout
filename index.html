@@ -1281,6 +1281,36 @@
     text-transform: uppercase;
   }
 
+  /* ---------- Bannière de consentement (n'existe que si pixel configuré) ---------- */
+  .bandeau-consent {
+    position: fixed;
+    left: 16px; right: 16px;
+    bottom: calc(16px + env(safe-area-inset-bottom));
+    z-index: 60;
+    max-width: 430px;
+    margin: 0 auto;
+    background: var(--blanc);
+    border: 1px solid var(--filet-clair);
+    border-radius: 16px;
+    padding: 16px 18px;
+    box-shadow: 0 24px 60px rgba(30, 39, 72, 0.22);
+    animation: leve 0.7s var(--doux);
+  }
+  .bandeau-consent p { font-size: 13.5px; line-height: 1.55; color: var(--brun); margin-bottom: 12px; }
+  .bandeau-consent a { color: var(--terracotta-texte); }
+  .consent-boutons { display: flex; gap: 10px; justify-content: flex-end; }
+  .consent-boutons button {
+    font-family: var(--body);
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    border-radius: 9px;
+    padding: 10px 16px;
+    cursor: pointer;
+  }
+  .consent-non { background: var(--papier); color: var(--brun); border: 1px solid var(--filet); }
+  .consent-oui { background: var(--prune); color: var(--blanc); border: none; }
+
   /* ---------- Mouvement réduit : tout se pose, rien ne bouge ---------- */
   @media (prefers-reduced-motion: reduce) {
     html { scroll-behavior: auto; }
@@ -1805,7 +1835,7 @@
     <p>Elles sont conservées 24 mois après notre dernier échange, puis supprimées. Si tu demandes leur suppression, elle est effectuée sous 30 jours.</p>
 
     <h3>Cookies et mesure d'audience</h3>
-    <p>Cette page <strong>ne dépose aucun cookie</strong> et n'utilise aucun outil de mesure d'audience, de publicité ou de suivi comportemental. Ta visite n'est pas tracée. C'est pour cette raison qu'aucune bannière de consentement ne t'est demandée.</p>
+    <p id="texte-cookies">Cette page <strong>ne dépose aucun cookie</strong> et n'utilise aucun outil de mesure d'audience, de publicité ou de suivi comportemental. Ta visite n'est pas tracée. C'est pour cette raison qu'aucune bannière de consentement ne t'est demandée.</p>
 
     <h3>Tes droits</h3>
     <p>Tu disposes d'un droit d'accès, de rectification, d'effacement, de limitation, d'opposition et de portabilité sur tes données. Écris à <span class="aremplir">adresse e-mail de contact</span> : tu recevras une réponse sous un mois.</p>
@@ -1853,6 +1883,13 @@ const CONFIG = {
   // déploiement, l'URL change : il faut la remettre ici.
   WEBHOOK_URL: "https://script.google.com/macros/s/AKfycbxelvzI5Y9BFhrZTsJkkWgoGm3ql88c1rLpmJq3gPzsDWZWcvhgyNGwAyIkDrYvpRoL5A/exec",
   WHATSAPP_URL: "https://chat.whatsapp.com/C028UBVju2XAx6RG9ShdXQ", // communauté WhatsApp privée
+  // Pixel Meta (Facebook/Instagram) pour le retargeting. Vide = aucun pixel,
+  // aucune bannière : la page reste 100 % sans traceur. Colle ici l'ID du
+  // pixel (Meta Business Suite ▸ Événements ▸ Sources de données) pour
+  // activer : la bannière de consentement apparaît et le pixel ne se charge
+  // qu'après un « J'accepte ». L'inscription envoie l'événement Lead, ce qui
+  // permet de cibler « visiteuses SANS Lead » = venues mais pas inscrites.
+  META_PIXEL_ID: "",
   TEMOIGNAGES: [
     // Vidéos témoignages (Yomi, etc.) : liens d'intégration YouTube ou Vimeo.
     // ex : { titre: "Yomi", url: "https://www.youtube.com/embed/XXXXXXXX" }
@@ -1891,7 +1928,7 @@ const donnees = {
   prenom: "", email: "", tel: "", mode: "",
   situation: "", sujet: "", essaye: "", accord: false,
   ecole: "", la1: "", la2: "", la3: "", la4: "",
-  source: "lp-webi-31-aout-v5"
+  source: "lp-webi-31-aout-v5" + (location.search.match(/utm_[^&]+/g) ? " · " + location.search.match(/utm_[^&]+/g).join(" ") : "")
 };
 
 /* ---------- Navigation dans le flow ---------- */
@@ -1970,6 +2007,10 @@ $('btn-optin').addEventListener('click', async () => {
   btn.disabled = true;
   await envoyer('inscription');
   btn.disabled = false;
+
+  // Pour le retargeting : Meta sait desormais que cette visiteuse est
+  // inscrite, donc a EXCLURE des publicites de relance.
+  if (window.fbq) fbq('track', 'Lead');
 
   if (mode.value === 'coaching') {
     montrer('etape-candidature');
@@ -2119,6 +2160,92 @@ setTimeout(() => {
   }
   afficher();
   setInterval(afficher, 30000);
+})();
+
+/* ---------- Compter les visites, sans rien pister ----------
+   Un POST anonyme vers le Sheet, une seule fois par session : date,
+   type d'appareil, page de provenance, campagne UTM. Pas d'IP côté
+   feuille, pas de cookie, pas d'identifiant : on compte, c'est tout. */
+(function () {
+  if (!CONFIG.WEBHOOK_URL) return;
+  try {
+    if (sessionStorage.getItem('selfty-visite')) return;
+    sessionStorage.setItem('selfty-visite', '1');
+  } catch (e) { /* navigation privée stricte : on comptera cette visite deux fois, tant pis */ }
+
+  const utm = (location.search.match(/utm_[^&]+/g) || []).join(' ');
+  fetch(CONFIG.WEBHOOK_URL, {
+    method: 'POST',
+    keepalive: true,
+    headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+    body: JSON.stringify({
+      etape: 'visite',
+      horodateur: new Date().toISOString(),
+      appareil: matchMedia('(pointer: coarse)').matches ? 'mobile' : 'ordinateur',
+      provenance: document.referrer || '',
+      utm: utm
+    })
+  }).catch(() => {});
+})();
+
+/* ---------- Pixel Meta, uniquement si configuré ET consenti ----------
+   Tant que META_PIXEL_ID est vide, rien de tout ceci n'existe : pas de
+   bannière, pas de script Meta, pas de cookie. Une fois l'ID en place,
+   le pixel ne se charge qu'après un « J'accepte » explicite. */
+(function () {
+  if (!CONFIG.META_PIXEL_ID) return;
+
+  const CLE = 'selfty-consent-pixel';
+  let choix = null;
+  try { choix = localStorage.getItem(CLE); } catch (e) {}
+
+  function chargerPixel() {
+    if (window.fbq) return;
+    !function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+    n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;
+    n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;
+    t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,
+    document,'script','https://connect.facebook.net/en_US/fbevents.js');
+    fbq('init', CONFIG.META_PIXEL_ID);
+    fbq('track', 'PageView');
+  }
+
+  // La politique de confidentialité doit dire la vérité : si le pixel est
+  // configuré, le paragraphe « aucun cookie » est remplacé.
+  const paragrapheCookies = document.getElementById('texte-cookies');
+  if (paragrapheCookies) {
+    paragrapheCookies.innerHTML = "Avec ton accord explicite (bannière en bas de page), cette page utilise le pixel Meta, un traceur de la société Meta Platforms Ireland Ltd, afin de mesurer les visites et de proposer des publicités pertinentes sur Facebook et Instagram. Il dépose des cookies et transmet des données de navigation à Meta, y compris hors Union européenne. Sans ton accord, aucun traceur n'est chargé et ta visite reste anonyme. Tu peux retirer ton accord à tout moment en effaçant les cookies de ton navigateur.";
+  }
+
+  if (choix === 'oui') { chargerPixel(); return; }
+  if (choix === 'non') return;
+
+  // La bannière, dans la langue de la page
+  const b = document.createElement('div');
+  b.className = 'bandeau-consent';
+  b.setAttribute('role', 'dialog');
+  b.setAttribute('aria-label', 'Consentement aux cookies');
+  b.innerHTML = '<p>Avec ton accord, on utilise un traceur Meta pour te reproposer ce live sur Instagram si tu pars sans t\'inscrire. <a href="#" data-ouvre-legal>En savoir plus</a></p>'
+    + '<div class="consent-boutons"><button type="button" class="consent-non">Non merci</button>'
+    + '<button type="button" class="consent-oui">J\'accepte</button></div>';
+  document.body.appendChild(b);
+
+  b.querySelector('.consent-oui').addEventListener('click', () => {
+    try { localStorage.setItem(CLE, 'oui'); } catch (e) {}
+    chargerPixel();
+    b.remove();
+  });
+  b.querySelector('.consent-non').addEventListener('click', () => {
+    try { localStorage.setItem(CLE, 'non'); } catch (e) {}
+    b.remove();
+  });
+  const lien = b.querySelector('[data-ouvre-legal]');
+  lien.addEventListener('click', e => {
+    e.preventDefault();
+    const m = document.getElementById('modale-legal');
+    m.hidden = false;
+    document.body.style.overflow = 'hidden';
+  });
 })();
 
 /* ---------- La plaquette de l'école, en surimpression ----------
